@@ -90,6 +90,47 @@ public class TicTacToeGame
 		int toss=(int)Math.floor(Math.random()*2);
 		return toss;
 	}
+	
+	/**
+	 * conditions for winning or tie
+	 */
+	public static int hasWon()
+	{
+		if(board[1] == board[5] && board[5]==board[9])
+		{
+			return 1;
+		}
+		else if (board[1] == board[4] && board[4]==board[7])
+		{
+			return 1;
+		}
+		else if (board[3] == board[6] && board[6]==board[9])
+		{
+			return 1;
+		}
+		else if (board[3] == board[5] && board[5]==board[7])
+		{
+			return 1;
+		}
+		else if (board[4] == board[5] && board[5]==board[6])
+		{
+			return 1;
+		}
+		else if (board[1] == board[2] && board[2]==board[3])
+		{
+			return 1;
+		}
+		else if (board[7] == board[8] && board[8]==board[9])
+		{
+			return 1;
+		}
+		else if (board[2] == board[5] && board[5]==board[8])
+		{
+			return 1;
+		}
+		else 	
+		    return 0;
+	}
 		
 	public static void main(String[] args) 
 	{
