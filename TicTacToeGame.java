@@ -39,18 +39,32 @@ public class TicTacToeGame
 		System.out.println(board[7] + "|" +board[8]+"|"+board[9]);
 	}
 	
-	public static void selectPlace(char option)
+	/**
+	 * selecting option to place X or O
+	 */
+	public static void selectPlace (char option)
 	{
 		System.out.println("Enter any position from 1-9");
 		int index = scanner.nextInt();
-		if(index>9)
+		if(index>9 || index<1)
 		{
 			System.out.println("Invalid position");
+			selectPlace(option);
 		}
-		else
-		{
-			board[index]=option;
-		}
+		 else
+		 {
+			 if(isFree(index))
+			 {
+			    board[index]=option;
+			 }
+			 else
+				 selectPlace(option);
+		 }	
+	}	
+	
+	public static boolean isFree(int index)
+	{
+	 	return board[index] == ' '; 
 	}
 	
 	public static void main(String[] args) 
