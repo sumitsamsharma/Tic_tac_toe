@@ -2,10 +2,12 @@ package com.cg.tictactoe;
 
 import java.util.Scanner;
 
-public class TicTacToeGame {
+public class TicTacToeGame 
+{
 	static Scanner scanner = new Scanner(System.in);
 	public static final int Size = 10;
 	public static char[] board = new char[Size];
+
 	/**
 	 * Initialised new board
 	 */
@@ -37,6 +39,20 @@ public class TicTacToeGame {
 		System.out.println(board[7] + "|" +board[8]+"|"+board[9]);
 	}
 	
+	public static void selectPlace(char option)
+	{
+		System.out.println("Enter any position from 1-9");
+		int index = scanner.nextInt();
+		if(index>9)
+		{
+			System.out.println("Invalid position");
+		}
+		else
+		{
+			board[index]=option;
+		}
+	}
+	
 	public static void main(String[] args) 
 	{
 		System.out.println("Welcome to Tic Tac Toe game ");
@@ -44,6 +60,8 @@ public class TicTacToeGame {
 		char player = playerInputs();
 		char computer = (player == 'X') ? 'O' : 'X';
 		System.out.println("Player chose: " + player + " Computer chose: " + computer);
+		showBoard();
+		selectPlace(player);
 		showBoard();
 	}
 }
