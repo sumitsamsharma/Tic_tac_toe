@@ -7,7 +7,10 @@ public class TicTacToeGame
 	static Scanner scanner = new Scanner(System.in);
 	public static final int Size = 10;
 	public static char[] board = new char[Size];
-
+	public static final int heads=0;
+	public static final int tails=1;
+	public static final int won=1;
+	public static final int tie=0;
 	/**
 	 * Initialised new board
 	 */
@@ -42,31 +45,52 @@ public class TicTacToeGame
 	/**
 	 * selecting option to place X or O
 	 */
-	public static void selectPlace (char option)
+	public static void selectPlace (char option,String check)
 	{
 		System.out.println("Enter any position from 1-9");
-		int index = scanner.nextInt();
-		if(index>9 || index<1)
+		int index;
+		if(check=="computer")
 		{
-			System.out.println("Invalid position");
-			selectPlace(option);
+			index=(int)Math.floor(Math.random()*10);
 		}
-		 else
-		 {
-			 if(isFree(index))
-			 {
-			    board[index]=option;
-			 }
-			 else
-				 selectPlace(option);
-		 }	
+		else
+		{
+			index = scanner.nextInt();	
+		}
+		if(isFree(index) && (index<=9 || index>0))
+		{
+			board[index]=option;
+			System.out.println("Added");	
+		}
+		else if(index > 9 || index < 1)
+		{
+			System.out.println("Invalid index");
+		    selectPlace(option,check);
+		}
+		else
+		{	
+			System.out.println("Position already filled, Choose another option");
+		    selectPlace(option,check);
+		}   
 	}	
 	
+	/**
+	 * checking if the index is free or not
+	 */
 	public static boolean isFree(int index)
 	{
 	 	return board[index] == ' '; 
 	}
 	
+	/**
+	 * tossing to start
+	 */
+	public static int toss()
+	{
+		int toss=(int)Math.floor(Math.random()*2);
+		return toss;
+	}
+		
 	public static void main(String[] args) 
 	{
 		System.out.println("Welcome to Tic Tac Toe game ");
@@ -75,7 +99,17 @@ public class TicTacToeGame
 		char computer = (player == 'X') ? 'O' : 'X';
 		System.out.println("Player chose: " + player + " Computer chose: " + computer);
 		showBoard();
-		selectPlace(player);
-		showBoard();
+		int toss=toss();
+		if(toss==heads)
+		{
+			System.out.println("Player won the toss, starting the game");
+			selectPlace(player,"player");
+		}
+		else
+		{	
+			System.out.println("Computer won the toss, starting the game");
+		    selectPlace(computer,"computer");
+		}   
+		showBoard();			
 	}
 }
