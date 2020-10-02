@@ -195,16 +195,30 @@ public class TicTacToeGame {
 		       else
 		       {
 		    	   int pos=suggestMove(computer);
-		    	   System.out.println("Suggested move");
 		    	   board[pos]=computer;
 		    	   won=hasWon(computer);
-		    	   showBoard();
+		    	   System.out.println("Checking if computer can win move");
 		    	   if(won==1)
 		    	   {
-		    		   System.out.println("Computer Won the game");
+		    		   System.out.println("Computer Won");
+		    		   board[pos]=computer;
 		    		   showBoard();
-		    		   break;
 		    	   }
+		    	   else
+		    	   {   
+		    		  pos=suggestMove(player);
+		    		  board[pos]=player;
+		    	      won=hasWon(player);
+		    	      if(won==1)
+		    	      {
+		    		      System.out.println("Player is winning");
+		    		      board[pos]=computer;
+		    		      showBoard();
+		    		      break;
+		    	      }
+		    	      board[pos]=player;
+		    	      showBoard();
+		    	   }  
 		       }
 		    }
 	    }	
@@ -221,17 +235,32 @@ public class TicTacToeGame {
 		              showBoard();
 		           }
 		           else
-		          {
-		    	     int pos=suggestMove(computer);
-		    	     board[pos]=computer;
-		    	     won=hasWon(computer);
-		    	     showBoard();
-		    	     if(won==1)
+		          {   
+		        	  int pos=suggestMove(computer);
+		    	      board[pos]=computer;
+		    	      won=hasWon(computer);
+		    	      System.out.println("Checking if computer can win move");
+		    	      if(won==1)
 		    	     {
-		    		    System.out.println("Computer Won the game");
-		    		    showBoard();
-		    		    break;
+		    		   System.out.println("Computer Won");
+		    		   board[pos]=computer;
+		    		   showBoard();
+		    		   break;
 		    	     }
+		    	     else
+		    	     {   
+		    		   pos=suggestMove(player);
+		    		   board[pos]=player;
+		    	       won=hasWon(player);
+		    	       if(won==1)
+		    	       {
+		    		      System.out.println("Player is winning");
+		    		      board[pos]=computer;
+		    		      showBoard();
+		    	       }
+		    	       board[pos]=computer;
+		    	       showBoard();
+		    	     }  
 		           }
 		           if(playerCount<2)
 		          {
