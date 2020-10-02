@@ -152,6 +152,146 @@ public class TicTacToeGame {
 		return 0;
 	}
 
+	public static int singleMove(char computer)
+	{
+		if(board[1]==computer)
+		{
+			if(isFree(4) && isFree(7))
+			{
+				return 7;
+			}
+			else if(isFree(2) && isFree(3))
+			{
+				return 3;
+			} 
+			else if(isFree(5) && isFree(9))
+			{
+				return 9;
+			} 
+		}
+		else if(board[2]==computer)
+		{
+			if(isFree(5) && isFree(7))
+			{
+				return 7;
+			}
+			else if(isFree(1))
+			{
+				return 1;
+			} 
+			else if(isFree(9))
+			{
+				return 9;
+			} 
+		}
+		else if(board[3]==computer)
+		{
+			if(isFree(5) && isFree(7))
+			{
+				return 7;
+			}
+			else if(isFree(1) && isFree(2))
+			{
+				return 1;
+			} 
+			else if(isFree(9) && isFree(6))
+			{
+				return 9;
+			} 
+		}
+		else if(board[4]==computer)
+		{
+			if(isFree(1) && isFree(7))
+			{
+				return 1;
+			}
+			else if(isFree(5) && isFree(6)  )
+			{
+				return 6;
+			} 
+			else if(isFree(9))
+			{
+				return 9;
+			} 
+		}
+		else if(board[5]==computer)
+		{
+			if(isFree(1) && isFree(9))
+			{
+				return 1;
+			}
+			else if(isFree(3) && isFree(7))
+			{
+				return 7;
+			} 
+			else if(isFree(4) && isFree(6))
+			{
+				return 4;
+			} 
+		}
+		else if(board[6]==computer)
+		{
+			if(isFree(3) && isFree(9))
+			{
+				return 3;
+			}
+			else if(isFree(5) && isFree(4))
+			{
+				return 4;
+			} 
+			else if(isFree(7))
+			{
+				return 7;
+			} 
+		}
+		else if(board[7]==computer)
+		{
+			if(isFree(3) && isFree(5))
+			{
+				return 3;
+			}
+			else if(isFree(1) && isFree(4))
+			{
+				return 1;
+			} 
+			else if(isFree(8) && isFree(9) )
+			{
+				return 9;
+			} 
+		}
+		else if(board[8]==computer)
+		{
+			if(isFree(9) && isFree(7))
+			{
+				return 7;
+			}
+			else if(isFree(5) && isFree(2))
+			{
+				return 2;
+			} 
+			else if(isFree(1))
+			{
+				return 1;
+			} 
+		}
+		else if(board[9]==computer)
+		{
+			if(isFree(5) && isFree(1))
+			{
+				return 1;
+			}
+			else if(isFree(3) && isFree(6))
+			{
+				return 3;
+			} 
+			else if(isFree(7) && isFree(8))
+			{
+				return 7;
+			} 
+		}
+		return 1;
+	}
+	
 	public static void main(String[] args) 
 	{
 		System.out.println("Welcome to Tic Tac Toe game ");
@@ -186,11 +326,29 @@ public class TicTacToeGame {
 		    		   break;
 		    	   }
 		       }
-		       if(computerCount<2)
+		       if(computerCount<1)
 		       {
 		          selectPlace(computer,"computer");
 		          computerCount++;
 		          showBoard();
+		       }
+		       else if(computerCount==1)
+		       {
+		    	   int pos=suggestMove(player);
+		    	   board[pos]=player;
+		    	   won=hasWon(player);
+		    	   if(won==1)
+		    	   {
+		    		    System.out.println("Player is winning");
+		    		    board[pos]=computer;
+		    		    showBoard();
+		    	   }
+		    	   else
+		    	   {   
+		    	      pos=singleMove(computer);
+		    	      board[pos]=computer;
+		    	      showBoard();
+		    	   }  
 		       }
 		       else
 		       {
@@ -214,9 +372,8 @@ public class TicTacToeGame {
 		    		      System.out.println("Player is winning");
 		    		      board[pos]=computer;
 		    		      showBoard();
-		    		      break;
 		    	      }
-		    	      board[pos]=player;
+		    	      board[pos]=computer;
 		    	      showBoard();
 		    	   }  
 		       }
@@ -228,14 +385,20 @@ public class TicTacToeGame {
 	    	  System.out.println("Computer won the toss, starting the game");
 	    	  while(won!=1)
 			    {
-		            if(computerCount<2)
+		            if(computerCount<1)
 		           {
 		              selectPlace(computer,"computer");
 		              computerCount++;
 		              showBoard();
 		           }
+		           else if(computerCount==1)
+				   {
+				       int pos=singleMove(computer);
+				       board[pos]=computer;
+				       showBoard();
+				   }
 		           else
-		          {   
+		           {   
 		        	  int pos=suggestMove(computer);
 		    	      board[pos]=computer;
 		    	      won=hasWon(computer);
