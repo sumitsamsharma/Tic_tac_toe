@@ -10,6 +10,8 @@ public class TicTacToeGame {
 	public static final int tails = 1;
 	public static int won = 0;
 	public static final int tie = 0;
+	public static int playerCount=0;
+	public static int computerCount=0;
 
 	/**
 	 * Initialised new board
@@ -41,26 +43,19 @@ public class TicTacToeGame {
 	/**
 	 * selecting option to place X or O
 	 */
-	public static void selectPlace(char option, String check) {
+	public static void selectPlace(char option) {
 		System.out.println("Enter any position from 1-9");
 		int index;
-		if (check == "computer") {
-			index = (int) Math.floor(Math.random() * 10);
-			System.out.println("Computer chose " + index);
-		} 
-		else 
-		{
-			index = scanner.nextInt();
-		}
+		index = scanner.nextInt();
 		if (isFree(index) && (index <= 9 && index > 0)) {
 			board[index] = option;
 			System.out.println("Added");
 		} else if (index > 9 || index < 1) {
 			System.out.println("Invalid index");
-			selectPlace(option, check);
+			selectPlace(option);
 		} else {
 			System.out.println("Position already filled, Choose another option");
-			selectPlace(option, check);
+			selectPlace(option);
 		}
 	}
 
@@ -68,7 +63,11 @@ public class TicTacToeGame {
 	 * checking if the index is free or not
 	 */
 	public static boolean isFree(int index) {
-		return board[index] == ' ';
+		if (board[index]=='O' || board[index]=='X')
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -108,11 +107,14 @@ public class TicTacToeGame {
 	 */
 	public static int suggestMove(char computer) {
 		if ((board[1] == computer && board[5] == computer) || (board[3] == computer && board[6] == computer)
-				|| (board[7] == computer && board[8] == computer)) {
-			if (isFree(9)) {
+				|| (board[7] == computer && board[8] == computer)) 
+		{
+			if (isFree(9)) 
+			{
 				return 9;
-			}
-		} else if ((board[2] == computer && board[5] == computer) || (board[7] == computer && board[9] == computer)) {
+		     }
+		} 
+		else if ((board[2] == computer && board[5] == computer) || (board[7] == computer && board[9] == computer)) {
 			if (isFree(8)) {
 				return 8;
 			}
@@ -149,6 +151,29 @@ public class TicTacToeGame {
 				return 1;
 			}
 		}
+		else if(isFree(1))
+		{
+			return 1;
+		}
+		else if(isFree(3))
+		{
+			return 3;
+		}
+		else if(isFree(7))
+		{
+			return 7;
+		}
+		else if(isFree(9))
+		{
+			return 1;
+		}
+		for(int i=1;i<10;i++)
+		{
+			if(isFree(i))
+			{
+				return i;
+			}
+		}
 		return 0;
 	}
 
@@ -167,7 +192,7 @@ public class TicTacToeGame {
 			else if(isFree(5) && isFree(9))
 			{
 				return 9;
-			} 
+			}
 		}
 		else if(board[2]==computer)
 		{
@@ -289,161 +314,170 @@ public class TicTacToeGame {
 				return 7;
 			} 
 		}
-		return 1;
+		else if(isFree(1))
+		{
+			return 1;
+		}
+		else if(isFree(3))
+		{
+			return 3;
+		}
+		else if(isFree(7))
+		{
+			return 7;
+		}
+		else if(isFree(9))
+		{
+			return 1;
+		}
+		for(int i=1;i<10;i++)
+		{
+			if(isFree(i))
+			{
+				return i;
+			}
+		}
+		return 0;
+	}
+	
+	public static boolean isTie(int count)
+	{
+		if(count>8)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static void playerPlay(char player)
+	{
+	     selectPlace(player);
+	     playerCount++;
+	     showBoard();
+	     won=hasWon(player);
+	     if(won==1)
+	     {
+	           System.out.println("Player Won the game");
+	           playerCount=0;
+    		   computerCount=0;
+	    	   showBoard();
+	     }
+	     return;
+	}
+	
+	public static void computerPlay(char computer,char player)
+	{
+		if(computerCount<2)
+	       {
+			   int pos=singleMove(computer);
+		       board[pos]=computer;
+		       System.out.println("Pos suggested"+pos);
+		       showBoard();
+		       computerCount++;
+		       showBoard();
+	       }
+	   
+	    else
+	       {
+	    	   int pos=suggestMove(computer);
+	    	   System.out.println("Pos suggested"+pos);
+	    	   board[pos]=computer;
+	    	   won=hasWon(computer);
+	    	   showBoard();
+	    	   System.out.println("Checking if computer can win move, won is"+won);
+	    	   if(won==1)
+	    	   {
+	    		   System.out.println("Computer Won");
+	    		   playerCount=0;
+	    		   computerCount=0;
+	    		   showBoard();
+	    	   }
+	    	   else
+	    	   {   
+	    		  board[pos]=' ';
+	    		  pos=suggestMove(player);
+	    		  board[pos]=player;
+	    		  System.out.println("move is: "+pos);
+	    		  showBoard();
+	    	      won=hasWon(player);
+	    	      if(won==1)
+	    	      {
+	    		      System.out.println("Player is winning");
+	    		      board[pos]=computer;
+	    		      showBoard();
+	    		      computerCount++;
+	    	      }
+	    	      else
+	    	      {	  
+	    	          board[pos]=' ';
+	    	          showBoard();
+	    	          System.out.println("Player is not winning");
+	    	          System.out.println("move is: "+pos);
+	    	          board[pos]=computer;
+	    	          showBoard();
+	    	          computerCount++;
+	    	      }  
+	    	   }  
+	       }
+		return;
 	}
 	
 	public static void main(String[] args) 
 	{
 		System.out.println("Welcome to Tic Tac Toe game ");
-		createBoard();
 		char player = playerInputs();
 		char computer = (player == 'X') ? 'O' : 'X';
 		System.out.println("Player chose: " + player + " Computer chose: " + computer);
-		showBoard();
-		int playerCount=0;
-		int computerCount=0;
-		int toss=toss();
-	    if(toss==heads)
-	    {
+		
+		int play=1;
+		while(play==1)
+		{	
+		  won=0;
+		  System.out.println("Enter 1 to play game. 2 to exit");
+		  createBoard();
+		  showBoard();
+		  play = scanner.nextInt();
+		  if(play==2)
+		  {
+			  break;
+		  }
+		  showBoard();
+		  int toss=toss();
+	      if(toss==heads)
+	      {
 	    	System.out.println("Player won the toss, starting the game");
 	    	while(won!=1)
 		    {
-		       if(playerCount<2)
+		       if(isTie(playerCount+computerCount))
 		       {
-		    	  selectPlace(player,"player");
-		          playerCount++;
-		          showBoard();
+		    	   System.out.println("Match tied");
+		    	   break;
 		       }
-		       else
-		       {
-		    	   selectPlace(player,"player");
-		    	   won=hasWon(player);
-		    	   showBoard();
-		    	   if(won==1)
-		    	   {
-		    		   System.out.println("Player Won the game");
-		    		   showBoard();
-		    		   break;
-		    	   }
-		       }
-		       if(computerCount<1)
-		       {
-		          selectPlace(computer,"computer");
-		          computerCount++;
-		          showBoard();
-		       }
-		       else if(computerCount==1)
-		       {
-		    	   int pos=suggestMove(player);
-		    	   board[pos]=player;
-		    	   won=hasWon(player);
-		    	   if(won==1)
-		    	   {
-		    		    System.out.println("Player is winning");
-		    		    board[pos]=computer;
-		    		    showBoard();
-		    	   }
-		    	   else
-		    	   {   
-		    	      pos=singleMove(computer);
-		    	      board[pos]=computer;
-		    	      showBoard();
-		    	   }  
-		       }
-		       else
-		       {
-		    	   int pos=suggestMove(computer);
-		    	   board[pos]=computer;
-		    	   won=hasWon(computer);
-		    	   System.out.println("Checking if computer can win move");
-		    	   if(won==1)
-		    	   {
-		    		   System.out.println("Computer Won");
-		    		   board[pos]=computer;
-		    		   showBoard();
-		    	   }
-		    	   else
-		    	   {   
-		    		  pos=suggestMove(player);
-		    		  board[pos]=player;
-		    	      won=hasWon(player);
-		    	      if(won==1)
-		    	      {
-		    		      System.out.println("Player is winning");
-		    		      board[pos]=computer;
-		    		      showBoard();
-		    	      }
-		    	      board[pos]=computer;
-		    	      showBoard();
-		    	   }  
-		       }
+		       playerPlay(player);
+		       System.out.println("Computer chance");
+		       computerPlay(computer,player);  
 		    }
-	    }	
+	      }	
 		       
 	      else
-	    {	
+	      {	
 	    	  System.out.println("Computer won the toss, starting the game");
 	    	  while(won!=1)
-			    {
-		            if(computerCount<1)
-		           {
-		              selectPlace(computer,"computer");
-		              computerCount++;
-		              showBoard();
-		           }
-		           else if(computerCount==1)
-				   {
-				       int pos=singleMove(computer);
-				       board[pos]=computer;
-				       showBoard();
-				   }
-		           else
-		           {   
-		        	  int pos=suggestMove(computer);
-		    	      board[pos]=computer;
-		    	      won=hasWon(computer);
-		    	      System.out.println("Checking if computer can win move");
-		    	      if(won==1)
-		    	     {
-		    		   System.out.println("Computer Won");
-		    		   board[pos]=computer;
-		    		   showBoard();
-		    		   break;
-		    	     }
-		    	     else
-		    	     {   
-		    		   pos=suggestMove(player);
-		    		   board[pos]=player;
-		    	       won=hasWon(player);
-		    	       if(won==1)
-		    	       {
-		    		      System.out.println("Player is winning");
-		    		      board[pos]=computer;
-		    		      showBoard();
-		    	       }
-		    	       board[pos]=computer;
-		    	       showBoard();
-		    	     }  
-		           }
-		           if(playerCount<2)
-		          {
-		    	     selectPlace(player,"player");
-		             playerCount++;
-		             showBoard();
-		          }
-		          else
-		          {
-		    	    selectPlace(player,"player");
-		    	    won=hasWon(player);
-		    	    showBoard();
-		    	    if(won==1)
-		    	    {
-		    		   System.out.println("Player Won the game");
-		    		   showBoard();
-		    		   break;
-		    	    }
-		          }
-	            }   
-	       }					
-	}
+			  {
+	    		  if(isTie(playerCount+computerCount))
+			      {
+			    	  System.out.println("Match tied");
+			    	  break;
+			      }
+	    		  computerPlay(computer,player); 
+	    		  if(won!=1)
+	    		  {	  
+	    			  playerPlay(player);
+	    		  }
+	    		  else 
+	    			  break;
+	    	  }
+	       }   
+	    }
+     }
 }
